@@ -11,6 +11,7 @@ import * as yup from "yup";
 import "./index.css";
 import { useTable, useExpanded } from "react-table";
 import EditProduct from "../editProduct";
+import { showEditForm } from "../../redux/actions/editAction";
 export interface Companies {
   id: number;
   type: string;
@@ -82,10 +83,10 @@ const ListProduct = (props: any) => {
     dispatch(showAddForm());
     console.log("ha");
   };
-  const handleEditForm = (e: any) => {
+  const handleEditForm = (data: Cars, e: any) => {
     e.persist();
-    console.log(hideAddForm());
-    //   dispatch(hode)
+    console.log(showEditForm());
+    dispatch(showEditForm(data));
   };
   return (
     <div className="App">
@@ -149,15 +150,17 @@ const ListProduct = (props: any) => {
                                   })}
                             )
                         })} */}
-            {company.map((item, index) => (
-              <tr key={index}>
+            {/* {company.map((item, index) => (
+              <tr key={index} >
                 <td>{item.type}</td>
                 <td>{item.company}</td>
                 <td>{item.vessel}</td>
                 <td colSpan={9}>{item.book_id}</td>
-                {/* <TranTable id={item.id} /> */}
+              
               </tr>
-            ))}
+              
+                // <TranTable id={item.id} />
+            ))} */}
             {/* {transport.map((item, index) => (
               <tr key={index} onClick={() => handleExpand(item.id)}>
                 <td>{item.}</td>
@@ -167,8 +170,8 @@ const ListProduct = (props: any) => {
               </tr>
             ))} */}
             {/*//////////////////// Cars table */}
-            {/* {car.map((item, index) => (
-              <tr key={index} onClick={() => handleEditForm(item.id)}>
+            {car.map((item, index) => (
+              <tr key={index} onClick={() => handleEditForm(item)}>
                 <td colSpan={2}></td>
                 <td>{item.matter}</td>
                 <td>{item.date_in_yard}</td>
@@ -181,7 +184,7 @@ const ListProduct = (props: any) => {
                 <td>{item.customer}</td>
                 <td>{item.inspection_company}</td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </table>
       </div>
@@ -190,21 +193,26 @@ const ListProduct = (props: any) => {
     </div>
   );
 };
-// function TranTable({ id: number }) {
-//   const [transport, setTransport] = useState([] as Transports[]);
-//   async function getTransport() {
-//     const transports = await axios.get(
-//       "http://localhost:3000/transports/" + id
-//     );
-//     setTransport(transports.data.data);
-//   }
-//   useEffect(() => {
-//     getTransport();
-//   }, []);
-//   return (
-//     <tr>
-//       <td></td>
-//     </tr>
-//   );
-// }
+function TranTable({ id }:{id:number}) {
+  console.log("id",id)
+  const [transport, setTransport] = useState([] as Transports[]);
+  async function getTransport() {
+    const transports = await axios.get(
+      "http://localhost:3000/carsByTransportId/" + id
+    );
+    setTransport(transports.data.data);
+  }
+  useEffect(() => {
+    getTransport();
+  }, []);
+  return (
+    <tbody>
+      {transport.map((item, key)=>(
+    <tr key={key}>
+      <td>{item.company_id}</td>
+    </tr>
+      ))}
+    </tbody>
+  );
+}
 export default ListProduct;

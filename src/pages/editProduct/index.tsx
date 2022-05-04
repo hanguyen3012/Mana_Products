@@ -210,7 +210,7 @@ const EditProduct = (props: any) => {
   );
 };
 const mapStateToProps = (state: any) => ({
-  addForm: state.addFormReducer.addForm,
+  editForm: state.editFormReducer.editForm,
 });
 
 export default connect(mapStateToProps)(EditProduct);
