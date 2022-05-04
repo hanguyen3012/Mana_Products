@@ -4,7 +4,7 @@ import React from 'react';
 const Button = (props: any) => {
   return (
     <div>
-      <button className={props.className} onClick={props.onSubmitFormLogin} >
+      <button className={props.className} onClick={props.onclick} >
         {props.button}
       </button>
     </div>
@@ -12,14 +12,14 @@ const Button = (props: any) => {
 };
 
 Button.propTypes = {
-  onSubmitFormLogin: PropTypes.func.isRequired,
+  onclick: PropTypes.func.isRequired,
   button: PropTypes.string,
   className: PropTypes.string,
   type: PropTypes.string
 };
 
 Button.defaultProps = {
-  onSubmitFormLogin: "",
+  onclick: "",
   button: "",
   className: "",
   type:""

@@ -3,7 +3,7 @@ import { InputTypes } from "../../../types";
 
 import React, { useState, Fragment, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
-import { FormError } from "../Error"
+import { FormError} from "../Error/index"
 
 interface InterfaceInput extends InputTypes {
   type: string;
@@ -37,22 +37,22 @@ const FormInput = ({ control, name, type, errors = {}, options, ...inputProps }:
         name={name}
         render={({ field: { onChange, value } }) => {
 
-          if (type === 'password') {
-            return (
-              <div className="form-password">
-                <input
-                  type={isType}
-                  {...inputProps}
-                  value={value || ''}
-                  onChange={e => onChange(e.target.value)}
-                  onBlur={() => typeof value === 'string' && onChange(value.trim())}
-                />
-                <div className="form-icon">
+          // if (type === 'password') {
+          //   return (
+          //     <div className="form-password">
+          //       <input
+          //         type={isType}
+          //         {...inputProps}
+          //         value={value || ''}
+          //         onChange={e => onChange(e.target.value)}
+          //         onBlur={() => typeof value === 'string' && onChange(value.trim())}
+          //       />
+          //       <div className="form-icon">
 
-                </div>
-              </div>
-            );
-          }
+          //       </div>
+          //     </div>
+          //   );
+          // }
           return (
             <input
               type={type}
@@ -64,7 +64,7 @@ const FormInput = ({ control, name, type, errors = {}, options, ...inputProps }:
           );
         }}
       />
-      <FormError name={name} errors={errors} />
+      < FormError name={name} errors={errors} />
     </div>
   );
 };
