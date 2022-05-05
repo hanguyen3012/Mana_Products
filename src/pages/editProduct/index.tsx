@@ -58,19 +58,10 @@ const EditProduct = (props: any) => {
   } = useForm<Cars>({
     resolver: yupResolver(schema),
   });
-  useEffect(() => {
-    function getFetchUrl() {
-      return "http://localhost:3000/car/" + id;
-    }
-    async function fetchData() {
-      const result = await axios(getFetchUrl());
-      setData(result.data);
-    }
-    fetchData();
-  }, [id]);
+
 
   const onSubmit = async (data: Cars) => {
-    await axios.put(`http://localhost:3000/car/` + id, data).then((data) => {});
+    await axios.put(`http://localhost:3000/car/` + id, data).then((data) => { });
   };
 
   if (!editForm) {
@@ -82,7 +73,9 @@ const EditProduct = (props: any) => {
   };
   return (
     <div className="add-form">
-      {/* <Button button="X" onclick={(e) => handleClose(e)}></Button> */}
+      <div className="close-btn">
+        <Button button="X" onclick={(e) => handleClose(e)}></Button>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label>Transport id</label>

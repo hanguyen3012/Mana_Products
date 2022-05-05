@@ -7,11 +7,12 @@ import { useTranslation } from "react-i18next";
 import AddProduct from "../addProduct";
 import { hideAddForm, showAddForm } from "../../redux/actions/addAction";
 import * as yup from "yup";
-
 import "./index.css";
 import { useTable, useExpanded } from "react-table";
 import EditProduct from "../editProduct";
 import { showEditForm } from "../../redux/actions/editAction";
+import { isTemplateExpression } from "typescript";
+
 export interface Companies {
   id: number;
   type: string;
@@ -21,7 +22,7 @@ export interface Companies {
 }
 
 export interface Transports {
-  id: number;
+  id: string;
   loading: string;
   discharge: string;
   etd: string;
@@ -49,44 +50,21 @@ export interface Cars {
 }
 const ListProduct = (props: any) => {
   const [company, setCompany] = useState([] as Companies[]);
-  const [transport, setTransport] = useState([] as Transports[]);
-  const [car, setCar] = useState([] as Cars[]);
-  //   const [isExpand, setIsExpand] = useState(false);
+  const [style, setStyle] = useState("attr-display");
   const dispatch = useDispatch();
   const [t] = useTranslation();
   async function getCompany() {
     const companies = await axios.get("http://localhost:3000/companies");
     setCompany(companies.data.data);
   }
-  //   async function getTransport() {
-  //     const transports = await axios.get("http://localhost:3000/transports");
-  //     setTransport(transports.data.data);
-  //   }
-  //   http://localhost:3000/carsByTransportId/1
-  async function getCar() {
-    const cars = await axios.get("http://localhost:3000/cars");
-    setCar(cars.data.data);
-  }
 
   useEffect(() => {
     getCompany();
-    // getTransport();
-    getCar();
   }, []);
 
-  //   const handleExpand = (id: number) => {
-  //     setIsExpand(true);
-  //   };
   const handleAddForm = (e: any) => {
     e.persist();
-    console.log(showAddForm());
     dispatch(showAddForm());
-    console.log("ha");
-  };
-  const handleEditForm = (data: Cars, e: any) => {
-    e.persist();
-    console.log(showEditForm());
-    dispatch(showEditForm(data));
   };
   return (
     <div className="App">
@@ -131,88 +109,129 @@ const ListProduct = (props: any) => {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((item, index) => {
-                            return (
-                                <tr key={item.id} className="item" onClick={(e) => handleRowClick(e, item.id)}>
-                                    <td>V {item.type}</td>
-                                    <td>{item.company}</td>
-                                    <td>{item.vessel}</td>
-                                    <td colSpan={9}>{item.book_id}</td>
-                                </tr>
-                                {data1.map((cell) => {
-                                    return (
-                                        <tr>
-                                        <td>{cell.company_id}
-                                        </td>
-                                        </tr>
-                                        >                                            
-                                    )
-                                  })}
-                            )
-                        })} */}
-            {/* {company.map((item, index) => (
-              <tr key={index} >
-                <td>{item.type}</td>
-                <td>{item.company}</td>
-                <td>{item.vessel}</td>
-                <td colSpan={9}>{item.book_id}</td>
-              
-              </tr>
-              
-                // <TranTable id={item.id} />
-            ))} */}
-            {/* {transport.map((item, index) => (
-              <tr key={index} onClick={() => handleExpand(item.id)}>
-                <td>{item.}</td>
-                <td>{item.company}</td>
-                <td>{item.vessel}</td>
-                <td colSpan={9}>{item.book_id}</td>
-              </tr>
-            ))} */}
-            {/*//////////////////// Cars table */}
-            {car.map((item, index) => (
-              <tr key={index} onClick={() => handleEditForm(item)}>
-                <td colSpan={2}></td>
-                <td>{item.matter}</td>
-                <td>{item.date_in_yard}</td>
-                <td>{item.car}</td>
-                <td>{item.vin_no}</td>
-                <td>{item.booking_day}</td>
-                <td>{item.EC}</td>
-                <td>{item.parking_day}</td>
-                <td>{item.remarks}</td>
-                <td>{item.customer}</td>
-                <td>{item.inspection_company}</td>
-              </tr>
-            ))}
+            {company.map((item, index) => {
+              return (
+                <>
+                  <tr
+                    key={index}
+                    onClick={() =>
+                      setStyle((style) =>
+                        style === "attr-display"
+                          ? "attr-display1"
+                          : "attr-display"
+                      )
+                    }
+                  >
+                    <td>
+                      {style == "attr-display" ? "^ " : "V "}
+                      {item.type}
+                    </td>
+                    <td>{item.company}</td>
+                    <td>{item.vessel}</td>
+                    <td colSpan={9}>{item.book_id}</td>
+                  </tr>
+                  <TranTable className={style} id={item.id} />
+                </>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <AddProduct />
-      <EditProduct />
+      <EditProduct/>
     </div>
   );
 };
-function TranTable({ id }:{id:number}) {
-  console.log("id",id)
+const TranTable = (props: any) => {
+  const [style, setStyle] = useState("attr-display2");
+  const id = props.id;
+
   const [transport, setTransport] = useState([] as Transports[]);
   async function getTransport() {
     const transports = await axios.get(
-      "http://localhost:3000/carsByTransportId/" + id
+      "http://localhost:3000/transportsByCompanyId/" + id
     );
     setTransport(transports.data.data);
   }
   useEffect(() => {
     getTransport();
   }, []);
+
   return (
-    <tbody>
-      {transport.map((item, key)=>(
-    <tr key={key}>
-      <td>{item.company_id}</td>
-    </tr>
-      ))}
-    </tbody>
+    <>
+      {transport.map((ite, key) => {
+        return (
+          <>
+            <tr
+              key={key}
+              onClick={(e) =>
+                setStyle((style) =>
+                  style === "attr-display2" ? "attr-display22" : "attr-display2"
+                )
+              }
+            >
+              <td className={props.className}></td>
+              <td className={props.className}>
+                {style == "attr-display2" ? "^ " : "V "}
+                {ite.loading}
+              </td>
+              <td className={props.className}>{ite.discharge}</td>
+              <td className={props.className}>{ite.etd}</td>
+              <td className={props.className}>{ite.eta}</td>
+              <td className={props.className}>{ite.payment_type}</td>
+              <td className={props.className}>{ite.roro_container}</td>
+              <td className={props.className}>{ite.yard_forwarder}</td>
+              <td className={props.className}>{ite.shipper}</td>
+              <td className={props.className}>{ite.iv_no}</td>
+              <td className={props.className} colSpan={3}>
+                {ite.discharge}
+              </td>
+            </tr>
+            <CarTable id={ite.id} className={style} />
+          </>
+        );
+      })}
+    </>
   );
-}
+};
+const CarTable = (props: any) => {
+  const id = props.id;
+  const dispatch = useDispatch();
+  const [car, setCar] = useState([] as Cars[]);
+  async function getTransport() {
+    const cars = await axios.get(
+      "http://localhost:3000/carsByTransportId/" + id
+    );
+    setCar(cars.data.data);
+  }
+  useEffect(() => {
+    getTransport();
+  }, []);
+
+  const handleEditForm = (data: Cars, e: any) => {
+    e.persist();
+    dispatch(showEditForm());
+    console.log(dispatch(showEditForm()));
+  };
+
+  return (
+    <>
+      {car.map((item, key) => (
+          <tr key={key} onClick={(e) => handleEditForm(item, e)}>
+            <td className={props.className} colSpan={2}></td>
+            <td className={props.className}>{item.matter}</td>
+            <td className={props.className}>{item.date_in_yard}</td>
+            <td className={props.className}>{item.car}</td>
+            <td className={props.className}>{item.vin_no}</td>
+            <td className={props.className}>{item.booking_day}</td>
+            <td className={props.className}>{item.EC}</td>
+            <td className={props.className}>{item.parking_day}</td>
+            <td className={props.className}>{item.remarks}</td>
+            <td className={props.className}>{item.customer}</td>
+            <td className={props.className}>{item.inspection_company}</td>
+          </tr>
+      ))}
+    </>
+  );
+};
 export default ListProduct;
