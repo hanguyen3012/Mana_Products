@@ -1,6 +1,6 @@
 export const showEditForm = (data: any) => ({
     type: "SHOW_EDITFROM",
-    payload: data
+    data: data,
 });
 
 export const hideEditForm = () => ({

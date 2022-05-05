@@ -2,7 +2,7 @@ import { number } from "yup";
 import { Action } from "../../types/action";
 
 const initialState = {
-    editForm: false,
+    isEditForm: false,
     data: {},
 };
 
@@ -13,12 +13,12 @@ const reducer = (state = initialState, action: Action) => {
       return {
         ...state,
         data: { ...action.payload },
-        editForm: true,
+        isEditForm: true,
       };
     case "HIDE_EDITFROM":
       return {
         ...state,
-        editForm: false,
+        isEditForm: false,
       };
     default:
       return state;

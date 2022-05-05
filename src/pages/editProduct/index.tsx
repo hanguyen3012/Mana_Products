@@ -30,8 +30,9 @@ interface Cars {
   transport_id: number;
 }
 const EditProduct = (props: any) => {
-  const { editForm } = props;
+  const { isEditForm } = props;
   const [data, setData] = useState(props.data as Cars);
+  console.log(data)
   const [t] = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -64,7 +65,7 @@ const EditProduct = (props: any) => {
     await axios.put(`http://localhost:3000/car/` + id, data).then((data) => { });
   };
 
-  if (!editForm) {
+  if (!isEditForm) {
     return null;
   }
   const handleClose = (e: any) => {
@@ -203,7 +204,7 @@ const EditProduct = (props: any) => {
   );
 };
 const mapStateToProps = (state: any) => ({
-  editForm: state.editFormReducer.editForm,
+  isEditForm: state.editFormReducer.isEditForm,
   data: state.editFormReducer.data,
 });
 

@@ -44,7 +44,27 @@ td {
   color: black;
   background-color: rgb(137, 173, 226);
 }
-
+.custom-select select{
+  height: 20px;
+  width: 200px;
+}
+.custom-select select:hover{
+  background-color: rgb(51, 51, 52);
+  color:#ffff;
+  border-radius: 3px;
+}
+option{
+  background-color: rgb(51, 51, 52);
+  color:#ffff;
+  border-radius: 3px;
+}
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+.close-btn{
+  margin-left: 320px;
+}
 
 /* tr:hover {
   background-color: rgb(32, 32, 31);
