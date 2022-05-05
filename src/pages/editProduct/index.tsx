@@ -31,7 +31,7 @@ interface Cars {
 }
 const EditProduct = (props: any) => {
   const { editForm } = props;
-  const [data, setData] = useState({} as Cars);
+  const [data, setData] = useState(props.data as Cars);
   const [t] = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -204,6 +204,7 @@ const EditProduct = (props: any) => {
 };
 const mapStateToProps = (state: any) => ({
   editForm: state.editFormReducer.editForm,
+  data: state.editFormReducer.data,
 });
 
 export default connect(mapStateToProps)(EditProduct);

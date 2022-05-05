@@ -159,11 +159,11 @@ const TranTable = (props: any) => {
 
   return (
     <>
-      {transport.map((ite, key) => {
+      {transport.map((ite, index) => {
         return (
           <>
             <tr
-              key={key}
+              key={index}
               onClick={(e) =>
                 setStyle((style) =>
                   style === "attr-display2" ? "attr-display22" : "attr-display2"
@@ -208,18 +208,19 @@ const CarTable = (props: any) => {
     getTransport();
   }, []);
 
-  const handleEditForm = (data: Cars, e: any) => {
-    e.persist();
-    dispatch(showEditForm());
-    console.log(dispatch(showEditForm()));
+  const handleEditForm = (data: Cars) => {
+    // e.persist();
+    console.log("data");
+    dispatch(showEditForm(data));
   };
 
   return (
     <>
-      {car.map((item, key) => (
-          <tr key={key} onClick={(e) => handleEditForm(item, e)}>
+      {car.map((item, index) => (
+        <>
+          <tr key={index} onClick={() => handleEditForm(item)}>
             <td className={props.className} colSpan={2}></td>
-            <td className={props.className}>{item.matter}</td>
+            <td className={props.className} onClick={() => {handleEditForm(item)}}>{item.matter}</td>
             <td className={props.className}>{item.date_in_yard}</td>
             <td className={props.className}>{item.car}</td>
             <td className={props.className}>{item.vin_no}</td>
@@ -230,6 +231,7 @@ const CarTable = (props: any) => {
             <td className={props.className}>{item.customer}</td>
             <td className={props.className}>{item.inspection_company}</td>
           </tr>
+          </>
       ))}
     </>
   );
