@@ -6,9 +6,13 @@ import './App.css';
 
 function App() {
   return (
-  
-          <><ListProduct /></>
-      
+    <BrowserRouter>
+      <div className="max-w-screen-md mx-auto pt-20">
+        <Routes>
+          <Route path="/" element={<ListProduct />}></Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

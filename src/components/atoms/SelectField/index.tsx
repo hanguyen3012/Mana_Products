@@ -2,14 +2,18 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-
 import { InputTypes } from "../../../types";
 import { FormError } from "../Error";
 import { useTranslation } from "react-i18next";
+import "./index.css"
+type SelectOption = { label: string; value: number};
 interface InterfaceSelect extends InputTypes {
-  options: any;
+  options: SelectOption[];
   isMulti?: boolean;
   isCreatable?: boolean;
+  defaultValue: any;
+  isLoading?: boolean;
+  disabled?: boolean
 }
 
 const colourStyles = {
@@ -39,30 +43,42 @@ const FormSelect = ({
   name,
   options,
   defaultValue,
+  placeholder,
+  disabled,
+  isMulti,
   errors,
+  isCreatable,
+  isLoading,
+  className
 }: InterfaceSelect) => {
+  const SelectInput: any = isCreatable ? CreatableSelect : Select;
   const [t] = useTranslation();
+
   return (
-    <div className="width-per-100">
+    <div className="custom-select">
       <Controller
         control={control}
         name={name}
         defaultValue={defaultValue}
-        render={({ field: { onChange, value, ref } }) => {
-          return (
-            <div className="custom-select">
-            <select onChange={(e) => onChange(e.target.value)}>
-              <option value="1">Tran001</option>
-              <option value="2">Tran002</option>
-              <option value="3">Tran003</option>
-              <option value="4">Tran004</option>
-              <option value="5">Tran005</option>
-              <option value="6">Tran006</option>
-              <option value="7">Tran007</option>
-            </select>
-            </div>
-          );
-        }}
+        render={({ field: { onChange, value, ref } }) => (
+          <SelectInput
+            id={name}
+            instanceId={name}
+            inputRef={ref}
+            disabled={disabled}
+            isMulti={isMulti}
+            isLoading={isLoading}
+            classNamePrefix={className}
+            options={options}
+            styles={colourStyles}
+            placeholder={t(`${placeholder}`)}
+            value={options.find((c: any) => c.value === value)}
+            onChange={(val: any) => {
+              onChange(isMulti ? val : val.value);
+            }}
+            noOptionsMessage={() => ''}
+          />
+        )}
       />
       <FormError name={name} errors={errors} />
     </div>
@@ -70,3 +86,5 @@ const FormSelect = ({
 };
 
 export { FormSelect, CreatableSelect };
+
+
