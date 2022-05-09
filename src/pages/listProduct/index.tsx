@@ -3,8 +3,7 @@ import { FormInput } from "../../components/atoms/InputForm";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from "yup";
-import "./index.css";
-
+import "../../assets/scss/listProduct.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { FormSelect } from "../../components/atoms/SelectField";
